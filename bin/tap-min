@@ -6,6 +6,8 @@ var stream = tapmin()
 process.stdin
   .pipe(stream)
   .pipe(process.stdout)
+  .pipe(process.stdout.write('\u001b[2J'))
+  .piple(process.stdout.write('\u001b[1;3H'))
 
 process.on('exit', function() {
   if (stream.errors.length) process.exit(1)
