@@ -11,8 +11,8 @@ module.exports = function () {
   var stream = duplexer(tap, out)
 
   function output (str) {
-    out.push('  ' + str)
-    out.push('\n hello \n')
+    out.push(' ' + str)
+    out.push('\n')
   }
 
   function format (total, time) {
@@ -29,7 +29,7 @@ module.exports = function () {
   })
 
   tap.on('assert', function (res) {
-    var assert = current + ' ' + res.name
+    var assert = current + ' : ' + res.name
     if (!res.ok) errors.push(chalk.white(assert))
   })
 
@@ -40,7 +40,7 @@ module.exports = function () {
   tap.on('results', function (res) {
     var count = res.asserts.length
     var time = prettyms(timer())
-    out.push('\n')
+    out.push('\n \u001b[2J \u001b[1;3H \n')
 
     if (errors.length) {
       output(chalk.red(format(count, time)))
