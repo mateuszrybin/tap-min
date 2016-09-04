@@ -5,17 +5,17 @@ var hirestime = require('hirestime')
 var prettyms = require('pretty-ms')
 var chalk = require('chalk')
 
-module.exports = function() {
+module.exports = function () {
   var tap = parser()
   var out = through()
   var stream = duplexer(tap, out)
 
-  function output(str) {
+  function output (str) {
     out.push('  ' + str)
-    out.push('\n')
+    out.push('\n hello \n')
   }
 
-  function format(total, time) {
+  function format (total, time) {
     var word = (total > 1) ? 'tests' : 'test'
     return total + ' ' + word + ' complete (' + time + ')'
   }
@@ -24,27 +24,27 @@ module.exports = function() {
   var errors = []
   var current = null
 
-  tap.on('comment', function(res) {
+  tap.on('comment', function (res) {
     current = '\n' + '  ' + res
   })
 
-  tap.on('assert', function(res) {
+  tap.on('assert', function (res) {
     var assert = current + ' ' + res.name
     if (!res.ok) errors.push(chalk.white(assert))
   })
 
-  tap.on('extra', function(res) {
+  tap.on('extra', function (res) {
     if (res !== '') errors.push(chalk.gray(res))
   })
 
-  tap.on('results', function(res) {
+  tap.on('results', function (res) {
     var count = res.asserts.length
     var time = prettyms(timer())
     out.push('\n')
 
     if (errors.length) {
       output(chalk.red(format(count, time)))
-      errors.forEach(function(error) {
+      errors.forEach(function (error) {
         output(error)
       })
     } else {
